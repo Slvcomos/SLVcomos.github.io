@@ -1,0 +1,53 @@
+/*
+3DHOP - 3D Heritage Online Presenter
+Copyright (c) 2014-2018, Visual Computing Lab, ISTI - CNR
+All rights reserved.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/*TITLE*/
+#viewertitle{ position:absolute; margin-top:20px; top:0; left:0; width:100%; color:#808000; text-align:center; font-family:verdana; font-style:italic; font-size:30px; line-height:35px; -webkit-user-select:none; -webkit-touch-callout:none; -khtml-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; touch-action:none; -ms-touch-action:none; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-tap-highlight-color: transparent;}
+
+/*BOOKMARKS TOOLBAR*/
+#bookmarksToolbar { position:absolute; left:10px; top:10px; -webkit-user-select:none; -webkit-touch-callout:none; -khtml-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; touch-action:none; -ms-touch-action:none; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-tap-highlight-color: transparent; }
+
+#bookmarksToolbar img { margin-bottom:8px; width:50px; height:50px; border-radius: 10px; opacity:0.5; cursor:pointer; -webkit-user-select:none; -webkit-touch-callout:none; -khtml-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; touch-action:none; -ms-touch-action:none; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-tap-highlight-color: transparent; }
+
+.container {
+    width: 100%; /* Or set a specific width */
+    margin: 0 auto; /* Center horizontally */
+  }
+  
+  #model-container {
+    flex-direction: row;
+    margin: 20px; /* Add margins for spacing */
+  }
+  
+  #descriptionBox {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  
+  .bookmarks-toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute; /* Remove if the toolbar is already positioned absolutely */
+    top: 20px; /* Adjust as needed */
+    left: 20px; /* Adjust as needed */
+  }
+  

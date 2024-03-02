@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta content="charset=UTF-8"/>
+<title>3DHOP - 3D Heritage Online Presenter</title>
+<!--STYLESHEET-->
+<link type="text/css" rel="stylesheet" href="stylesheet/3dhop.css"/>
+<link type="text/css" rel="stylesheet" href="stylesheet/3dhop_panels.css"/>
+<link type="text/css" rel="stylesheet" href="stylesheet\bookmarks.css"/>
+<!--SPIDERGL-->
+<script type="text/javascript" src="js/spidergl.js"></script>
+<!--JQUERY-->
+<script type="text/javascript" src="js/jquery.js"></script>
+<!--PRESENTER-->
+<script type="text/javascript" src="js/presenter.js"></script>
+<!--3D MODELS LOADING AND RENDERING-->
+<script type="text/javascript" src="js/nexus.js"></script>
+<script type="text/javascript" src="js/ply.js"></script>
+<!--TRACKBALLS-->
+<script type="text/javascript" src="js/trackball_turntable.js"></script>
+<script type="text/javascript" src="js/trackball_turntable_pan.js"></script>
+<script type="text/javascript" src="js/trackball_pantilt.js"></script>
+<script type="text/javascript" src="js/trackball_sphere.js"></script>
+<!--UTILITY-->
+<script type="text/javascript" src="js/init.js"></script>
+<script type="text/javascript" src="js/bookmarks.js"></script>
+</head>
+<body>
+	<!--<div>
+		<a onclick="updateTrackballPosition();">Get Trackball Position</a>
+		<input type="text" id="trackballPositionTextBox" readonly  style="width: 300px; height: 100px;">
+	</div>-->
+<div id="3dhop" class="tdhop"><div id="tdhlg"></div>
+ <div id="toolbar">
+  <img id="home"        title="Home"                   src="skins/dark/home.png"/><br/>
+<!--ZOOM-->
+  <img id="zoomin"      title="Zoom In"                src="skins/dark/zoomin.png"/><br/>
+  <img id="zoomout"     title="Zoom Out"               src="skins/dark/zoomout.png"/><br/>
+<!--ZOOM-->
+<!--LIGHTING-->
+  <img id="lighting_off" title="Enable Lighting"       src="skins/dark/lighting_off.png" style="position:absolute; visibility:hidden;"/>
+  <img id="lighting"     title="Disable Lighting"      src="skins/dark/lighting.png"/><br/>
+<!--LIGHTING-->
+<!--FULLSCREEN-->
+  <img id="full_on"     title="Exit Full Screen"       src="skins/dark/full_on.png" style="position:absolute; visibility:hidden;"/>
+  <img id="full"        title="Full Screen"            src="skins/dark/full.png"/>
+<!--FULLSCREEN-->
+<br>
+<div id="bookmarksToolbar" class="bookmarks-toolbar">
+	<img id="pos1" title="Position 1" src="img/1.png" onclick="showDescription('pos1')"/><br/>
+	<img id="pos2" title="Position 2" src="img/2.png" onclick="showDescription('pos2')"/><br/>
+	<img id="pos3" title="Position 3" src="img/3.png" onclick="showDescription('pos3')"/><br/>
+ </div>
+ </div>
+
+
+ <canvas id="draw-canvas" style="background-image: url(skins/backgrounds/dark.jpg)"/>
+</div>
+</body>
+
+<script type="text/javascript">
+var presenter = null;
+
+function setup3dhop() {
+	presenter = new Presenter("draw-canvas");
+
+	presenter.setScene({
+		meshes: {
+			"mesh_1" : { url: "models/Model_last_version_without_top_scaled_centercentered.nxs" }
+		},
+		modelInstances : {
+			"model_1" : { 
+				mesh  : "mesh_1",
+				color : [0.8, 0.7, 0.75]
+			}
+		},
+		trackball: {
+			type : TurntablePanTrackball,
+			trackOptions : {
+				startPhi: 0.0,
+				startTheta: 0.0,
+				startDistance: 2.5,
+				minMaxPhi: [-180, 180],
+				minMaxTheta: [-5.0, 10.0],
+				minMaxDist: [0.5, 5.0]
+			}
+		}
+	});
+}
+
+function actionsToolbar(action) {
+	if(action=='home') presenter.resetTrackball();
+//--FULLSCREEN--
+	else if(action=='full'  || action=='full_on') fullscreenSwitch();
+//--FULLSCREEN--
+//--ZOOM--
+	else if(action=='zoomin') presenter.zoomIn();
+	else if(action=='zoomout') presenter.zoomOut();
+//--ZOOM--
+//--LIGHTING--
+	else if(action=='lighting' || action=='lighting_off') { presenter.enableSceneLighting(!presenter.isSceneLightingEnabled()); lightingSwitch(); }
+//--LIGHTING--
+//--BOOKMARKS--
+	else if (action == 'pos1') {
+        presenter.animateToTrackballPosition([-2.6613540687194437,-3.8306770343597094,0.4550519707249377,0.1520196258653089,-0.008354063527765214,0.7845264902250001]);
+        window.parent.postMessage("TrascrIzione del nome di Metilia Torquata.", "*");
+    } else if (action == 'pos2') {
+        presenter.animateToTrackballPosition([-1.0538572487131244,9.258939928548864,0.059435771150654404,0.017241262732190836,-0.001717813038966916,0.8464699104481548]);
+        window.parent.postMessage("Al centro della scena raffigurata sulla faccia principale, Achille imbraccia le armi, circondato dalle figlie di Licomede e trattenuto nello slancio in avanti da Deidamia, innamorata del giovane guerriero.", "*");
+    } else if (action == 'pos3') {
+		presenter.animateToTrackballPosition([-1.9724268601453068,-0.15639858863099879,-0.4755592942473993,0.09459611656930567,-0.06885877589340748,0.8543493478550251]);
+        window.parent.postMessage("Nella porzione sinistra del rilievo si osserva l'ambascieria dei Greci, guidata da Ulisse, identificato dal berretto al punta (pileo) che accorre verso Achille. Nell'estremità della scena vi è Diomede e un terzo personaggio, probabilmente identificabile con Fenice", "*");
+	}
+}
+
+// Get the button elements within the bookmarks toolbar//
+const buttons = document.querySelectorAll("#bookmarksToolbar img");
+
+function showDescription(bookmarkId) {
+    var description = "";
+
+    // Assuming bookmarkId is a string, you can set descriptions based on different bookmarks
+    switch (bookmarkId) {
+        case 'pos1':
+            description = "TrascrIzione del nome di Metilia Torquata.";
+            break;
+        case 'pos2':
+            description = "Al centro della scena raffigurata sulla faccia principale,  Achille imbraccia le armi, circondato dalle figlie di Licomede e trattenuto nello slancio in avanti da Deidamia, innamorata del giovane guerriero.";
+            break;
+        case 'pos3':
+            description = "Nella porzione sinistra del rilievo si osserva l'ambascieria dei Greci, guidata da Ulisse, identificato dal berretto al punta (pileo) che accorre verso Achille. Nell'estremità della scena vi è Diomede e un terzo personaggio, probabilmente identificabile con Fenice";
+            break;
+
+        default:
+            description = "Default Description";
+    }
+
+
+    // Send the description to the parent window
+    window.parent.postMessage(description, "*");
+}
+
+$(document).ready(function(){
+	init3dhop();
+
+	setup3dhop();
+	resizeCanvas(500,500);
+
+	moveToolbar(20,20);
+
+
+	initbookmarksToolbar();
+	moveBookmarksToolbar(90,30);
+
+});
+//function updateTrackballPosition() {
+    //var trackballPosition = presenter.getTrackballPosition();
+    //document.getElementById('trackballPositionTextBox').value = trackballPosition.toString();
+  //}//
+
+</script>
+</html>
